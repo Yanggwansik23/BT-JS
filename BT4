@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tra Cứu Giá Hoa Quả</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 440px;
+      margin: 40px auto;
+      line-height: 1.6;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 14px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #1b5e20;
+    }
+    #ketQua {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 4px;
+      font-size: 16px;
+      display: none;
+    }
+    .tim-thay {
+      background-color: #e8f5e9;
+      color: #1b5e20;
+      border-left: 4px solid #2e7d32;
+    }
+    .khong-thay {
+      background-color: #ffebee;
+      color: #c62828;
+      border-left: 4px solid #c62828;
+      font-weight: bold;
+    }
+    .goi-y {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
 
+  <h2>Tra Cứu Giá Hoa Quả</h2>
+
+  <label for="tenHoaQua">Nhập tên hoa quả:</label>
+  <input type="text" id="tenHoaQua" placeholder="Ví dụ: Táo, Cam, Xoài, Dưa hấu...">
+
+  <button id="btnXemGia" type="button">Xem giá</button>
+
+  <div id="ketQua"></div>
+
+  <div class="goi-y">
+    Danh sách hiện có: Táo, Cam, Xoài, Chuối, Dưa hấu, Nho, Dâu tây.
+  </div>
+
+  <script>
+    // Danh sách giá hoa quả (đơn vị: VNĐ / kg)
+    const bangGiaHoaQua = {
+      "táo": 65000,
+      "cam": 45000,
+      "xoài": 35000,
+      "chuối": 22000,
+      "dưa hấu": 18000,
+      "nho": 120000,
+      "dâu tây": 150000
+    };
+
+    function traCuuGia(tenNhap) {
+      // Chuẩn hóa chuỗi: xóa khoảng trắng đầu/cuối, gộp khoảng trắng giữa các từ, chuyển chữ thường
+      const tuKhoa = tenNhap.trim().replace(/\s+/g, " ").toLowerCase();
+
+      if (!tuKhoa || !(tuKhoa in bangGiaHoaQua)) {
+        return { timThay: false, thongDiep: "Tìm không thấy" };
+      }
+
+      const gia = bangGiaHoaQua[tuKhoa];
+      return {
+        timThay: true,
+        ten: tuKhoa.charAt(0).toUpperCase() + tuKhoa.slice(1),
+        giaDinhDang: gia.toLocaleString("vi-VN") + " VNĐ / kg"
+      };
+    }
+
+    function hienThiGia() {
+      const inputEl = document.getElementById("tenHoaQua");
+      const ketQuaEl = document.getElementById("ketQua");
+      const ketQua = traCuuGia(inputEl.value);
+
+      ketQuaEl.style.display = "block";
+
+      if (ketQua.timThay) {
+        ketQuaEl.className = "tim-thay";
+        ketQuaEl.innerHTML = `Giá của <strong>${ketQua.ten}</strong>: <strong>${ketQua.giaDinhDang}</strong>`;
+      } else {
+        ketQuaEl.className = "khong-thay";
+        ketQuaEl.textContent = ketQua.thongDiep; // "Tìm không thấy"
+      }
+    }
+
+    document.getElementById("btnXemGia").addEventListener("click", hienThiGia);
+
+    // Cho phép nhấn phím Enter để tra cứu nhanh
+    document.getElementById("tenHoaQua").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        hienThiGia();
+      }
+    });
+  </script>
+
+</body>
+</html>
