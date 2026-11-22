@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tính Số Ngày Trong Một Tháng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 420px;
+      margin: 40px auto;
+      line-height: 1.6;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 9px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 16px;
+      background-color: #1565c0;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0d47a1;
+    }
+    #ketQua {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 4px;
+      background-color: #e3f2fd;
+      border-left: 4px solid #1565c0;
+      font-size: 16px;
+      display: none;
+    }
+    .loi {
+      background-color: #ffebee !important;
+      border-left-color: #c62828 !important;
+      color: #c62828;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Tính Số Ngày Trong Tháng</h2>
+
+  <label for="thang">Nhập tháng (1 - 12):</label>
+  <input type="number" id="thang" min="1" max="12" placeholder="Ví dụ: 2">
+
+  <label for="nam">Nhập năm dương lịch:</label>
+  <input type="number" id="nam" min="1" placeholder="Ví dụ: 2024 hoặc 2026">
+
+  <button id="btnTinh" type="button">Tính số ngày</button>
+
+  <div id="ketQua"></div>
+
+  <script>
+    function laNamNhuan(nam) {
+      return (nam % 4 === 0 && nam % 100 !== 0) || (nam % 400 === 0);
+    }
+
+    function tinhSoNgayTrongThang(thang, nam) {
+      // new Date(nam, thang, 0) trả về ngày cuối cùng của 'thang' (vì tháng trong Date bắt đầu từ 0)
+      return new Date(nam, thang, 0).getDate();
+    }
+
+    function hienThiKetQua() {
+      const thangVal = Number(document.getElementById("thang").value);
+      const namVal = Number(document.getElementById("nam").value);
+      const box = document.getElementById("ketQua");
+
+      box.style.display = "block";
+
+      if (
+        !Number.isInteger(thangVal) || thangVal < 1 || thangVal > 12 ||
+        !Number.isInteger(namVal) || namVal <= 0
+      ) {
+        box.className = "loi";
+        box.textContent = "Vui lòng nhập tháng từ 1 đến 12 và năm là số nguyên dương hợp lệ!";
+        return;
+      }
+
+      const soNgay = tinhSoNgayTrongThang(thangVal, namVal);
+      let ghiChu = "";
+      if (thangVal === 2) {
+        ghiChu = laNamNhuan(namVal)
+          ? ` (năm ${namVal} là năm nhuận)`
+          : ` (năm ${namVal} không phải năm nhuận)`;
+      }
+
+      box.className = "";
+      box.innerHTML = `Tháng <strong>${thangVal}/${namVal}</strong> có <strong>${soNgay}</strong> ngày${ghiChu}.`;
+    }
+
+    document.getElementById("btnTinh").addEventListener("click", hienThiKetQua);
+  </script>
+
+</body>
+</html>
