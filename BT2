@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiểm Tra Năm Nhuận</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 40px auto; line-height: 1.6; }
+    input { width: 100%; padding: 8px; margin: 5px 0 15px; box-sizing: border-box; font-size: 16px; }
+    button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
+    button:hover { background-color: #218838; }
+    #thongBao { margin-top: 20px; padding: 15px; border-radius: 4px; font-weight: bold; display: none; }
+    .nhuan { background-color: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+    .khong-nhuan { background-color: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+  </style>
+</head>
+<body>
+
+  <h2>Kiểm Tra Năm Nhuận</h2>
+  
+  <label for="nhapNam">Nhập năm cần kiểm tra:</label>
+  <input type="number" id="nhapNam" placeholder="Ví dụ: 2024, 2026, 2000...">
+
+  <button onclick="kiemTraNamNhuan()">Kiểm tra</button>
+
+  <div id="thongBao"></div>
+
+  <script>
+    function kiemTraNamNhuan() {
+      const input = document.getElementById('nhapNam').value;
+      const nam = parseInt(input, 10);
+      const hopThongBao = document.getElementById('thongBao');
+
+      // Kiểm tra dữ liệu đầu vào hợp lệ (phải là số nguyên dương)
+      if (isNaN(nam) || nam <= 0 || !Number.isInteger(Number(input))) {
+        alert("Vui lòng nhập một số năm hợp lệ (số nguyên dương)!");
+        return;
+      }
+
+      // Điều kiện kiểm tra năm nhuận
+      const laNamNhuan = (nam % 4 === 0 && nam % 100 !== 0) || (nam % 400 === 0);
+
+      // Hiển thị kết quả
+      hopThongBao.style.display = 'block';
+      if (laNamNhuan) {
+        hopThongBao.className = 'nhuan';
+        hopThongBao.textContent = `Năm ${nam} LÀ năm nhuận (tháng 2 có 29 ngày).`;
+      } else {
+        hopThongBao.className = 'khong-nhuan';
+        hopThongBao.textContent = `Năm ${nam} KHÔNG PHẢI là năm nhuận (tháng 2 có 28 ngày).`;
+      }
+    }
+  </script>
+
+</body>
+</html>
