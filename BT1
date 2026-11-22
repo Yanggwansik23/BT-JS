@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tính Lãi Đơn Ngân Hàng</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 40px auto; line-height: 1.6; }
+    input { width: 100%; padding: 8px; margin: 5px 0 15px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; cursor: pointer; font-size: 16px; }
+    button:hover { background-color: #0056b3; }
+    #ketQua { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #28a745; display: none; }
+  </style>
+</head>
+<body>
+
+  <h2>Tính Lãi Suất Đơn</h2>
+  
+  <label for="soTien">Số tiền vay (VNĐ):</label>
+  <input type="number" id="soTien" placeholder="Ví dụ: 100000000">
+
+  <label for="laiSuat">Lãi suất (%/năm):</label>
+  <input type="number" id="laiSuat" step="0.1" placeholder="Ví dụ: 8.5">
+
+  <label for="soNam">Số năm vay (n):</label>
+  <input type="number" id="soNam" placeholder="Ví dụ: 5">
+
+  <button onclick="xuLyTinhToan()">Tính tiền phải trả</button>
+
+  <div id="ketQua"></div>
+
+  <script>
+    function xuLyTinhToan() {
+      // Lấy giá trị từ các ô input
+      const p = parseFloat(document.getElementById('soTien').value);
+      const rate = parseFloat(document.getElementById('laiSuat').value);
+      const n = parseFloat(document.getElementById('soNam').value);
+      const hopKetQua = document.getElementById('ketQua');
+
+      // Kiểm tra dữ liệu trống hoặc âm
+      if (isNaN(p) || isNaN(rate) || isNaN(n) || p <= 0 || rate < 0 || n <= 0) {
+        alert("Vui lòng nhập đầy đủ và chính xác các thông số lớn hơn 0!");
+        return;
+      }
+
+      // Áp dụng công thức lãi đơn
+      const tienLai = p * (rate / 100) * n;
+      const tongTien = p + tienLai;
+
+      // Hiển thị ra màn hình
+      hopKetQua.style.display = 'block';
+      hopKetQua.innerHTML = `
+        <p><strong>Tiền lãi phát sinh:</strong> ${tienLai.toLocaleString('vi-VN')} VNĐ</p>
+        <p><strong>Tổng số tiền phải trả sau ${n} năm:</strong> <br>
+        <span style="color: #d9534f; font-size: 1.2em; font-weight: bold;">
+          ${tongTien.toLocaleString('vi-VN')} VNĐ
+        </span></p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
